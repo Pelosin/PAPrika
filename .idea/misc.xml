@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable-v24/qr.xml" value="0.2855" />
+        <entry key="app/src/main/res/drawable-v24/settings_selector.xml" value="0.36615384615384616" />
+        <entry key="app/src/main/res/drawable/bg_black_button.xml" value="0.1555" />
+        <entry key="app/src/main/res/drawable/bottom_dialog_top_view.xml" value="0.1555" />
+        <entry key="app/src/main/res/font/gabriel_sans.xml" value="0.38" />
+        <entry key="app/src/main/res/layout/activity_display_information.xml" value="0.25462962962962965" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.32037037037037036" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_object_detection.xml" value="0.3351449275362319" />
+        <entry key="app/src/main/res/layout/home_recycler_row.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/object_detection_bottom_dialog.xml" value="0.35625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
