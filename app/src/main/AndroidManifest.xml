@@ -17,6 +17,10 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".presentation.main.bottom_nav.BottomNavActivity"
+            android:exported="false"
+            android:label="@string/title_activity_bottom_nav" />
+        <activity
             android:name=".presentation.check_table.CheckTableActivity"
             android:exported="false" />
         <activity
@@ -32,16 +36,14 @@
             android:exported="true" />
         <activity
             android:name=".presentation.login.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentation.home.DisplayInformationActivity"
-            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

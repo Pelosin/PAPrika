@@ -1,7 +1,6 @@
-package com.example.mynaoseioqueapp.presentation.home
+package com.example.mynaoseioqueapp.presentation.main.bottom_nav.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.mynaoseioqueapp.common.DispatcherProvider
 import com.example.mynaoseioqueapp.common.Resource
 import com.example.mynaoseioqueapp.domain.model.Food
@@ -13,11 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DisplayInformationViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val repository: FoodRepository,
     private val dispatcher: DispatcherProvider
 ) : ViewModel(){
-
     sealed class FoodEvent{
         class Success(val foodList: List<Food>) : FoodEvent()
         class Failure(val errorText: String) : FoodEvent()

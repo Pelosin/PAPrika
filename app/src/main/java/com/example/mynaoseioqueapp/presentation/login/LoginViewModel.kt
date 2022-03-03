@@ -8,8 +8,10 @@ import com.example.mynaoseioqueapp.data.remote.dto.UserLoginResponse
 import com.example.mynaoseioqueapp.domain.model.Food
 import com.example.mynaoseioqueapp.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +20,16 @@ class LoginViewModel @Inject constructor(
     private val repository: UserRepository,
     private val dispatcher: DispatcherProvider
 ) : ViewModel() {
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            delay(2000)
+            _isLoading.value = false
+        }
+    }
 
     sealed class UserEvent {
         class Success(val userResponse: UserLoginResponse) : LoginViewModel.UserEvent()
@@ -30,6 +42,7 @@ class LoginViewModel @Inject constructor(
     val request : StateFlow<UserEvent> = _request
 
     fun loginUserRequestFromApi(username: String, password: String) {
+        //FAZER VERIFICAÇÃO DE EMAIL E SENHA AQUI PELOSI TAMO JUNTO
         viewModelScope.launch(dispatcher.io){
             _request.value = UserEvent.Loading
             when(val userResponse = repository.loginUserPostRequest(username, password)){

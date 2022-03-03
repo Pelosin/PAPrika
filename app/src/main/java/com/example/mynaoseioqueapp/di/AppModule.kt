@@ -3,10 +3,13 @@ package com.example.mynaoseioqueapp.di
 import com.example.mynaoseioqueapp.common.Constant
 import com.example.mynaoseioqueapp.common.DispatcherProvider
 import com.example.mynaoseioqueapp.data.remote.FoodApi
+import com.example.mynaoseioqueapp.data.remote.TableApi
 import com.example.mynaoseioqueapp.data.remote.UserApi
 import com.example.mynaoseioqueapp.data.repository.FoodRepoImpl
+import com.example.mynaoseioqueapp.data.repository.TableRepoImpl
 import com.example.mynaoseioqueapp.data.repository.UserRepoImpl
 import com.example.mynaoseioqueapp.domain.repository.FoodRepository
+import com.example.mynaoseioqueapp.domain.repository.TableRepository
 import com.example.mynaoseioqueapp.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -21,6 +24,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun providesTableApi(): TableApi = Retrofit.Builder()
+        .baseUrl(Constant.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(TableApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providesTableRepo(api: TableApi): TableRepository = TableRepoImpl(api)
 
     @Singleton
     @Provides

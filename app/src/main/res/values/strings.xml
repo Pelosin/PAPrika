@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">MyNaoSeiOQueApp</string>
+    <string name="app_name">PAPrika</string>
     <string name="app_preferences">AABBCCDDEEFFGG</string>
+    <string name="title_activity_bottom_nav">BottomNavActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_settings">Settings</string>
 </resources>

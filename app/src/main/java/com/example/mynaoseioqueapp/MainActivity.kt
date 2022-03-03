@@ -1,19 +1,7 @@
 package com.example.mynaoseioqueapp
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
-import com.example.mynaoseioqueapp.databinding.ActivityMainBinding
-import com.example.mynaoseioqueapp.presentation.home.DisplayInformationViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

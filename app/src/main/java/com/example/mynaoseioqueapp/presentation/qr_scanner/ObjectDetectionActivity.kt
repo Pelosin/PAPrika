@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.mynaoseioqueapp.databinding.ActivityObjectDetectionBinding
 import com.example.mynaoseioqueapp.presentation.check_table.CheckTableActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -33,16 +35,13 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var cameraProvider: ProcessCameraProvider
+
     private val REQUEST_CODE_PERMISSIONS = 10
 
     private lateinit var analyser: ImageAnalysis
 
-    private lateinit var constraintLayout: ConstraintLayout
-
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
-
-//    private var hasHideBottomDialog = true
-//    private var hasShowBottomDialog = false
+    private val cameraViewModel: CameraViewModel by viewModels()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -55,13 +54,26 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         binding = ActivityObjectDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        constraintLayout = findViewById(com.example.mynaoseioqueapp.R.id.bottom_dialog)
-        bottomSheetBehavior = BottomSheetBehavior.from(constraintLayout)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
         this.window.setFlags(1024, 1024)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        setUpCameraViewModel()
+    }
+
+    private fun setUpCameraViewModel() {
+        cameraViewModel
+            .processCameraProvider
+            .observe(
+                this,
+                Observer { provider: ProcessCameraProvider ->
+                    cameraProvider = provider ?: return@Observer
+                    startCamera()
+                }
+            )
+    }
+
+    private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener(
@@ -155,18 +167,11 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
                         return@filter false
                     }.isEmpty()) {
 
-//                    hideBottomDialogView()
                     return@addOnSuccessListener
                 }
                 val uri = Uri.parse(barcodes.first().url!!.url!!)
-//                val tableId = uri.getQueryParameter("id")
-//                if(tableId.isNullOrEmpty()){
-//                    return@addOnSuccessListener
-//                }
-
                 onQrCodeScanned(uri.toString())
-//                showBottomDialog()
-//                readBarcodeData(barcodes)
+
             }
             .addOnFailureListener {
                 // Task failed with an exception
@@ -184,45 +189,4 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         cameraExecutor.shutdown()
         finish()
     }
-
-//    private fun showBottomDialog() {
-//        if(!hasShowBottomDialog){
-//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-//            bottomSheetBehavior.setHideableInternal(false)
-//            hasHideBottomDialog = false
-//            hasShowBottomDialog = true
-//        }
-//    }
-//
-//    private fun hideBottomDialogView() {
-//        if(!hasHideBottomDialog){
-//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//            hasHideBottomDialog = true
-//            hasShowBottomDialog = false
-//        }
-//    }
-
-//    private fun readBarcodeData(barcodes: List<Barcode>) {
-//        for (barcode in barcodes) {
-//            val bounds = barcode.boundingBox
-//            val corners = barcode.cornerPoints
-//
-//            val rawValue = barcode.rawValue
-//
-//            val valueType = barcode.valueType
-//            // See API reference for complete list of supported types
-//            when (valueType) {
-//                Barcode.TYPE_WIFI -> {
-//                    val ssid = barcode.wifi!!.ssid
-//                    val password = barcode.wifi!!.password
-//                    val type = barcode.wifi!!.encryptionType
-//                }
-//                Barcode.TYPE_URL -> {
-//                    val title = barcode.url!!.title
-//                    val url = barcode.url!!.url
-//
-//                }
-//            }
-//        }
-//    }
 }

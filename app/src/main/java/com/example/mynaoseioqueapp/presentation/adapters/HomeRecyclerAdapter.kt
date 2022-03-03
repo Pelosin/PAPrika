@@ -9,19 +9,25 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mynaoseioqueapp.R
-import com.example.mynaoseioqueapp.databinding.HomeRecyclerRowBinding
+import com.example.mynaoseioqueapp.databinding.RowHomeRecyclerBinding
 import com.example.mynaoseioqueapp.domain.model.Food
 import com.example.mynaoseioqueapp.presentation.food_details.FoodDetailsActivity
 
 class HomeRecyclerAdapter (
     val context: Context,
-    val foodList: List<Food>
+    val foodList: List<Food>,
+    val onClickHomeEvent: HomeViewHolder.OnClickHomeEvent
 ): RecyclerView.Adapter<HomeRecyclerAdapter.HomeViewHolder>() {
     class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        interface OnClickHomeEvent{
+            fun onClickEvent(food: Food)
+        }
+
         val foodNameTextView : TextView
         val foodPriceTextView : TextView
         val foodCardView : CardView
-        private val binding = HomeRecyclerRowBinding.bind(itemView)
+        private val binding = RowHomeRecyclerBinding.bind(itemView)
 
         init {
             foodNameTextView = binding.rowTitle
@@ -36,7 +42,7 @@ class HomeRecyclerAdapter (
         viewType: Int
     ): HomeRecyclerAdapter.HomeViewHolder {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.home_recycler_row, parent, false)
+        val view = inflater.inflate(R.layout.row_home_recycler, parent, false)
 
         return HomeViewHolder(view)
     }
@@ -48,7 +54,8 @@ class HomeRecyclerAdapter (
         holder.foodPriceTextView.text = selectedFood.price.toString()
 
         holder.foodCardView.setOnClickListener {
-            context.startActivity(Intent(context, FoodDetailsActivity::class.java))
+//            context.startActivity(Intent(context, FoodDetailsActivity::class.java))
+            onClickHomeEvent.onClickEvent(selectedFood)
         }
     }
 
