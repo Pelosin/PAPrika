@@ -45,6 +45,21 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         />
 
+    <TextView
+        android:id="@+id/emptyCartText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descTextView"
+        android:text="Your cart is empty. Add some itens to eat"
+        android:fontFamily="@font/font_medium"
+        android:textColor="@color/gray"
+        android:textSize="20sp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:visibility="gone"
+        />
+
     <LinearLayout
         android:id="@+id/cartList"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,9 +82,11 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/orderConstLayout"
+        android:clickable="true"
         >
 
         <TextView
+            android:id="@+id/orderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@id/arrowButton"
@@ -90,4 +107,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/cartList"
+        app:layout_constraintTop_toBottomOf="@+id/cartList"
+        app:layout_constraintTop_toTopOf="@+id/orderConstLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/orderConstLayout"
+        android:fontFamily="@font/font_medium"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

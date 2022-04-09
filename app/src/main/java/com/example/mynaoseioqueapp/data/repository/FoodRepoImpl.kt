@@ -10,9 +10,9 @@ import javax.inject.Inject
 class FoodRepoImpl @Inject constructor(
     private val api : FoodApi
 ) : FoodRepository{
-    override suspend fun getFoods(authToke: String): Resource<List<Food>> {
+    override suspend fun getFoods(authToken: String): Resource<List<Food>> {
         return try {
-            val response = api.getAllFoods("Bearer $authToke")
+            val response = api.getAllFoods("Bearer $authToken")
             val result = response.body()
             if(response.isSuccessful && result != null){
                 Resource.Success(result)

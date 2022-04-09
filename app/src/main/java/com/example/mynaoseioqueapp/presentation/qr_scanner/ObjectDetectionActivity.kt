@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.widget.Toast
@@ -12,13 +11,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.mynaoseioqueapp.databinding.ActivityObjectDetectionBinding
 import com.example.mynaoseioqueapp.presentation.check_table.CheckTableActivity
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -55,6 +52,8 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         setContentView(binding.root)
 
         this.window.setFlags(1024, 1024)
+
+        val context = context
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -161,7 +160,7 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             .process(inputImage)
             .addOnSuccessListener { barcodes ->
                 if(barcodes.filter {
-                        if (it.valueType == Barcode.TYPE_URL && it.boundingBox != null){
+                        if (it.valueType == Barcode.TYPE_TEXT && it.boundingBox != null){
                             return@filter true
                         }
                         return@filter false
@@ -169,8 +168,22 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
                     return@addOnSuccessListener
                 }
-                val uri = Uri.parse(barcodes.first().url!!.url!!)
-                onQrCodeScanned(uri.toString())
+
+                val rawValue = barcodes.first().rawValue
+
+//                val uri = Uri.parse(barcodes.first().url!!.url!!)
+//
+//                val args: Set<String> = uri.queryParameterNames
+//
+//                Log.d("MyUriParemeterrrrrrrrrr", args.toString())
+//
+//                Log.d("MyUriParemeterrrrrrrrrr", uri.getQueryParameter("id").toString())
+//                Toast.makeText(
+//                    context,
+//                    uri.getQueryParameter("id").toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                onQrCodeScanned(rawValue!!)
 
             }
             .addOnFailureListener {
@@ -182,9 +195,9 @@ class ObjectDetectionActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             }
     }
 
-    private fun onQrCodeScanned(urlForRequest: String) {
+    private fun onQrCodeScanned(rawValue: String) {
         val intent = Intent(this@ObjectDetectionActivity, CheckTableActivity::class.java)
-        intent.putExtra("selectedTable", urlForRequest)
+        intent.putExtra("selectedTable", rawValue)
         startActivity(intent)
         cameraExecutor.shutdown()
         finish()

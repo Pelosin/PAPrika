@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.mynaoseioqueapp.R
@@ -30,17 +31,22 @@ class CheckTableActivity : AppCompatActivity() {
             Constant.APP_PREF, Context.MODE_PRIVATE
         )
 
-        check(intent.hasExtra("selectedTable")) { "No table selected" }
-        check(sharedPref.contains(Constant.ACCESS_TOKEN)) { "No auth token" }
+//        check(intent.hasExtra("selectedTable")) { "No table selected" }
+//        check(sharedPref.contains(Constant.ACCESS_TOKEN)) { "No auth token" }
 
-        checkTableViewModel.occupyTableRequest(
-            readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref)!!,
-            intent.getStringExtra("selectedTable")!!)
+        val authToken = readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref)!!
+
+        val id = intent.getStringExtra("selectedTable")!!.toLong()
+
+        Log.d("MyUrlllllllllllll", id.toString())
+
+        checkTableViewModel.occupyTableRequest(authToken, id)
 
         lifecycleScope.launchWhenStarted {
             checkTableViewModel.request.collect { event ->
-                when(event){
+                when (event) {
                     is CheckTableViewModel.TableEvent.Success -> {
+                        binding.tableProgressBar.visibility = View.GONE
                         saveData(Constant.TABLE_ID, event.id.toString(), sharedPref)
                         finish()
                     }
@@ -48,9 +54,12 @@ class CheckTableActivity : AppCompatActivity() {
                         binding.tableProgressBar.visibility = View.VISIBLE
                     }
                     is CheckTableViewModel.TableEvent.Failure -> {
-                        Log.d("MyLogggggggTableeee", event.errorText)
                         binding.tableProgressBar.visibility = View.GONE
-                        //FAZER POP-UP PARA ERRO AQUI TAMO JUNTO PELOSI
+                        Toast.makeText(
+                            this@CheckTableActivity,
+                            "Could not occupy table",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         finish()
                     }
                     else -> Unit
@@ -59,11 +68,11 @@ class CheckTableActivity : AppCompatActivity() {
         }
     }
 
-    private fun readDataFromSharedPref(key: String, sharedPref: SharedPreferences): String?{
+    private fun readDataFromSharedPref(key: String, sharedPref: SharedPreferences): String? {
         return sharedPref.getString(key, "Token Not Found")
     }
 
-    private fun saveData(key: String, value: String, sharedPref: SharedPreferences){
+    private fun saveData(key: String, value: String, sharedPref: SharedPreferences) {
         sharedPref.edit().putString(key, value).apply()
     }
 }

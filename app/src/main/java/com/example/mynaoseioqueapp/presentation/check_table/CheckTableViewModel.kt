@@ -1,5 +1,6 @@
 package com.example.mynaoseioqueapp.presentation.check_table
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mynaoseioqueapp.common.DispatcherProvider
@@ -27,15 +28,16 @@ class CheckTableViewModel @Inject constructor(
     private val _request = MutableStateFlow<TableEvent>(TableEvent.Empty)
     val request: StateFlow<TableEvent> =  _request
 
-    fun occupyTableRequest(authToken: String, url: String){
+    fun occupyTableRequest(authToken: String, id: Long){
         viewModelScope.launch (dispatcher.io){
             _request.value = TableEvent.Loading
-            when(val apiResponse  = repository.occupyTable(authToken, url)){
+            when(val apiResponse  = repository.occupyTable(authToken, id)){
                 is Resource.Success -> {
                     _request.value = TableEvent.Success(apiResponse.data!!)
                 }
                 is Resource.Error -> {
                     _request.value = TableEvent.Failure(apiResponse.message!!)
+                    Log.d("MyApiMessageeeeeeeee", apiResponse.message)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.example.mynaoseioqueapp.presentation.food_details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mynaoseioqueapp.common.DispatcherProvider
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,11 +34,12 @@ class FoodDetailsViewModel @Inject constructor(
         viewModelScope.launch (dispatcherProvider.default){
             _request.value = SetLineOrderEvent.Loading
             try {
-                val lineOrder = LineOrder(food.name, 1)
-                LineOrderSetter.setLineOrderList(lineOrder)
+                val lineOrder = LineOrder(food.name, 1, food.price, BigDecimal(0))
+                LineOrderSetter.setLineOrderList(lineOrder, food.price)
                 _request.value = SetLineOrderEvent.Success(lineOrder)
             } catch (e: Exception){
                 _request.value = SetLineOrderEvent.Failure(e.localizedMessage!!)
+                Log.d("MyLoggggErrorrrrrArrayyyyyy", e.localizedMessage)
             }
         }
     }
