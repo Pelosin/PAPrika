@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.bottom_nav.cart.CartFragment"
+    tools:context=".presentation.main.bottom_nav.cart.CartFragmentSub"
     android:background="@color/black"
     android:paddingHorizontal="@dimen/activity_horizontal_margin"
     android:paddingVertical="@dimen/activity_vertical_margin">
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/titleTextView"
-        android:src="@drawable/hamburger"
+        android:src="@drawable/ic_log_out_1"
         app:layout_constraintBottom_toBottomOf="@id/titleTextView"
         />
 
@@ -62,50 +62,52 @@
 
     <LinearLayout
         android:id="@+id/cartList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="10dp">
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/orderConstLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descTextView"
+        android:layout_marginBottom="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cartRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintTop_toBottomOf="@id/cartList"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:id="@+id/orderConstLayout"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
         android:clickable="true"
-        >
+        app:layout_constraintBottom_toTopOf="@+id/leaveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="160dp">
 
         <TextView
             android:id="@+id/orderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/arrowButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:fontFamily="@font/font_medium"
             android:text="Order"
             android:textColor="@color/white"
-            android:fontFamily="@font/font_medium"
             android:textSize="22sp"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/arrowButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/arrowButton"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/arrow_right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/arrow_right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -120,5 +122,23 @@
         android:text=""
         android:textColor="@color/white"
         android:textSize="22sp"
+        />
+
+    <Button
+        android:id="@+id/leaveButton"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="Leave"
+        android:textSize="20dp"
+        android:background="@drawable/white_button_bgg"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:elevation="10dp"
+        android:visibility="gone"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

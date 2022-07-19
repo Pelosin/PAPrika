@@ -10,12 +10,16 @@
     <application
         android:name=".DaggerApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_paprika_icon_black"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_paprika_icon_black"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".presentation.sign_up.SignUpActivity"
+            android:exported="false"
+            />
         <activity
             android:name=".presentation.main.bottom_nav.BottomNavActivity"
             android:exported="false"
@@ -37,7 +41,8 @@
         <activity
             android:name=".presentation.login.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Starting">
+            android:theme="@style/Theme.AppCompat.Starting"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

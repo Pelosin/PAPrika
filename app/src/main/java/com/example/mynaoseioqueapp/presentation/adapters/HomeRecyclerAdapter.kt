@@ -5,9 +5,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.mynaoseioqueapp.R
 import com.example.mynaoseioqueapp.databinding.RowHomeRecyclerBinding
 import com.example.mynaoseioqueapp.domain.model.Food
@@ -26,13 +30,18 @@ class HomeRecyclerAdapter (
 
         val foodNameTextView : TextView
         val foodPriceTextView : TextView
+        val foodImageView : ImageView
         val foodCardView : CardView
+        val progressBar : ProgressBar
         private val binding = RowHomeRecyclerBinding.bind(itemView)
 
         init {
             foodNameTextView = binding.rowTitle
             foodPriceTextView = binding.rowPrice
             foodCardView = binding.homeCardRow
+            foodImageView = binding.foodImageView
+            progressBar = binding.progressBar
+            binding.progressBar.visibility = View.VISIBLE
         }
 
     }
@@ -49,6 +58,12 @@ class HomeRecyclerAdapter (
 
     override fun onBindViewHolder(holder: HomeRecyclerAdapter.HomeViewHolder, position: Int) {
         val selectedFood = foodList[position]
+
+        selectedFood.url.let {
+            holder.foodImageView.load(it){
+                crossfade(true)
+            }
+        }
 
         holder.foodNameTextView.text = selectedFood.name
         holder.foodPriceTextView.text = selectedFood.price.toString()

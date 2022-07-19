@@ -4,19 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.bottom_nav.settings.SettingsFragment">
+    tools:context=".presentation.main.bottom_nav.settings.SettingsFragment"
+    android:background="@color/black"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingVertical="@dimen/activity_vertical_margin">
 
     <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
+        android:letterSpacing="-0.025"
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:fontFamily="@font/font_bold"
+        android:textSize="28sp"
+        android:text="Settings"/>
+
+    <ImageView
+        android:id="@+id/hamburger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/titleTextView"
+        android:src="@drawable/hamburger"
+        app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/descTextView"
+        android:letterSpacing="-0.025"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/hamburger"
+        android:text="Tweak your settings"
+        android:fontFamily="@font/font_medium"
+        android:textColor="@color/gray"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userConfigConst"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@id/descTextView">
+
+        <ImageView
+            android:id="@+id/icon_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/gabriel_sans"
+            android:text="Joe Mama"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/icon_user"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Jhon"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="@id/usernameTextView"
+            app:layout_constraintTop_toBottomOf="@id/usernameTextView" />
+
+        <ImageView
+            android:id="@+id/logOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_log_out_1"
+            app:tint="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@+id/userConfigConst"
+        android:background="@color/gray"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/histTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Historico de Pedidos"
+        android:fontFamily="@font/gabriel_sans"
+        android:textColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        android:layout_marginTop="15dp"
+        android:textSize="18dp"
+        />
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        app:layout_constraintTop_toBottomOf="@id/histTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="15dp"
+        tools:listitem="@layout/row_history_settings"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,17 @@
 package com.example.mynaoseioqueapp.presentation.main.bottom_nav.cart
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mynaoseioqueapp.common.Constant
 import com.example.mynaoseioqueapp.common.DispatcherProvider
 import com.example.mynaoseioqueapp.common.Resource
 import com.example.mynaoseioqueapp.domain.model.LineOrder
 import com.example.mynaoseioqueapp.domain.model.Order
 import com.example.mynaoseioqueapp.domain.repository.OrderRepository
+import com.example.mynaoseioqueapp.domain.repository.TableRepository
 import com.example.mynaoseioqueapp.presentation.food_details.FoodDetailsViewModel
 import com.example.mynaoseioqueapp.util.LineOrderSetter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartFragmentViewModel @Inject constructor(
     private val repository: OrderRepository,
+    private val tableRepository: TableRepository,
     private val dispatcher: DispatcherProvider
 ) : ViewModel() {
 
@@ -92,4 +96,5 @@ class CartFragmentViewModel @Inject constructor(
             }
         }
     }
+
 }

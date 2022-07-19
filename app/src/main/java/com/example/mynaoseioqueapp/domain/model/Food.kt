@@ -5,6 +5,7 @@ import java.math.BigDecimal
 
 data class Food(
     val name: String,
-    val desc: String,
-    val price: BigDecimal
+    val description: String,
+    val price: BigDecimal,
+    val url: String,
 ) : Serializable

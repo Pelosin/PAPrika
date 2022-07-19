@@ -40,7 +40,16 @@ class CheckTableActivity : AppCompatActivity() {
 
         Log.d("MyUrlllllllllllll", id.toString())
 
-        checkTableViewModel.occupyTableRequest(authToken, id)
+        if(readDataFromSharedPref(Constant.TABLE_ID, sharedPref).equals("Token Not Found")) {
+            checkTableViewModel.occupyTableRequest(authToken, id)
+        } else {
+            Toast.makeText(
+                this,
+                "You cannot occupie two tables",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        }
 
         lifecycleScope.launchWhenStarted {
             checkTableViewModel.request.collect { event ->
@@ -60,6 +69,7 @@ class CheckTableActivity : AppCompatActivity() {
                             "Could not occupy table",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.d("MyTableLogErrorAAAAA", event.errorText)
                         finish()
                     }
                     else -> Unit

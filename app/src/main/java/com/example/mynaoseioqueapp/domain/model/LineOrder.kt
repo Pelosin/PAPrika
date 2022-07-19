@@ -6,5 +6,6 @@ data class LineOrder(
     val name: String,
     var quantity: Int,
     var price: BigDecimal,
-    var partialPrice: BigDecimal
+    var partialPrice: BigDecimal,
+    var url: String
 )

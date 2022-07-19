@@ -12,7 +12,7 @@ class FoodRepoImpl @Inject constructor(
 ) : FoodRepository{
     override suspend fun getFoods(authToken: String): Resource<List<Food>> {
         return try {
-            val response = api.getAllFoods("Bearer $authToken")
+            val response = api.getAllFoods(authToken)
             val result = response.body()
             if(response.isSuccessful && result != null){
                 Resource.Success(result)

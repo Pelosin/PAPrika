@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.example.mynaoseioqueapp.R
 import com.example.mynaoseioqueapp.common.Constant
 import com.example.mynaoseioqueapp.databinding.ActivityFoodDetailsBinding
@@ -13,6 +14,7 @@ import com.example.mynaoseioqueapp.domain.model.Food
 import com.example.mynaoseioqueapp.util.LineOrderSetter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class FoodDetailsActivity : AppCompatActivity() {
@@ -20,6 +22,11 @@ class FoodDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFoodDetailsBinding
 
     private val detailsViewModel: FoodDetailsViewModel by viewModels()
+
+    private var quantity: Int = 1
+
+    private var displayPrice = BigDecimal(0)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +37,32 @@ class FoodDetailsActivity : AppCompatActivity() {
 
         val foodToBeDisplayed = intent.getSerializableExtra(Constant.FOOD_SERIALIZABLE) as Food
 
-        binding.objText.text = foodToBeDisplayed.name
-        binding.objText2.text = foodToBeDisplayed.price.toEngineeringString()
+        binding.foodDetailsName.text = foodToBeDisplayed.name
+        binding.foodDescriptionDetailsTextView.text = foodToBeDisplayed.description
 
-        binding.orderButton.setOnClickListener {
-            detailsViewModel.setLineOrderList(foodToBeDisplayed)
+        binding.priceDetailsTextView.text = foodToBeDisplayed.price.toEngineeringString()
+
+        foodToBeDisplayed.url.let {
+            binding.foodDetailsImageView.load(foodToBeDisplayed.url)
+        }
+
+        binding.addButton.setOnClickListener {
+            if (quantity == 1) return@setOnClickListener
+            quantity -= 1
+            displayPrice = foodToBeDisplayed.price * quantity.toBigDecimal()
+            binding.quantityDetailsTextView.text = quantity.toString()
+            binding.priceDetailsTextView.text = displayPrice.toString()
+        }
+
+        binding.subButton.setOnClickListener {
+            quantity += 1
+            displayPrice = foodToBeDisplayed.price * quantity.toBigDecimal()
+            binding.quantityDetailsTextView.text = quantity.toString()
+            binding.priceDetailsTextView.text = displayPrice.toString()
+        }
+
+        binding.addToCartButton.setOnClickListener {
+            detailsViewModel.setLineOrderList(foodToBeDisplayed, quantity)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -42,15 +70,16 @@ class FoodDetailsActivity : AppCompatActivity() {
                 when(event) {
                     is FoodDetailsViewModel.SetLineOrderEvent.Success -> {
                         Toast.makeText(this@FoodDetailsActivity,
-                            "Food added in the cart",
+                            "Your item was added to the cart",
                             Toast.LENGTH_SHORT).show()
+                        finish()
                     }
                     is FoodDetailsViewModel.SetLineOrderEvent.Loading -> {
 
                     }
                     is FoodDetailsViewModel.SetLineOrderEvent.Failure -> {
                         Toast.makeText(this@FoodDetailsActivity,
-                            "Food can not be added in the cart",
+                            "Something went wrong, try again",
                             Toast.LENGTH_SHORT).show()
                         Log.d("MyLogggggErrorrrrrrrr", event.errorText)
                     }

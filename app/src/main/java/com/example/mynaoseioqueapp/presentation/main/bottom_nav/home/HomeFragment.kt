@@ -16,6 +16,7 @@ import com.example.mynaoseioqueapp.common.Constant
 import com.example.mynaoseioqueapp.databinding.FragmentHomeBinding
 import com.example.mynaoseioqueapp.domain.model.Food
 import com.example.mynaoseioqueapp.presentation.adapters.HomeRecyclerAdapter
+import com.example.mynaoseioqueapp.presentation.adapters.ParentAdapter
 import com.example.mynaoseioqueapp.presentation.food_details.FoodDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -29,6 +30,8 @@ class HomeFragment : Fragment(), HomeRecyclerAdapter.HomeViewHolder.OnClickHomeE
 
     private val viewModel: HomeViewModel by viewModels()
 
+    private lateinit var sharedPref: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,36 +39,34 @@ class HomeFragment : Fragment(), HomeRecyclerAdapter.HomeViewHolder.OnClickHomeE
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.homeRecyclerView.setHasFixedSize(true)
-        binding.homeRecyclerView.layoutManager = LinearLayoutManager(
-            context, LinearLayoutManager.HORIZONTAL, false)
+        binding.parentRecyclerView.setHasFixedSize(true)
+        binding.parentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val sharedPref = requireActivity().getSharedPreferences(
+        sharedPref = requireActivity().getSharedPreferences(
             Constant.APP_PREF, Context.MODE_PRIVATE
         )
 
         if(readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref) == "Token Not Found"){
             Log.d("MyLoggggggErrorrrrrrr", "Token not found")
         }else{
-            viewModel.requestFoodFromApi(readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref)!!)
+            viewModel.requestCategoryFromApi(readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref)!!)
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.request.collect { event ->
                 when(event) {
-                    is HomeViewModel.FoodEvent.Success -> {
+                    is HomeViewModel.CategoryEvent.Success -> {
 //                        Log.d("MyLoggggggFood", event.foodList.toString())
-                        binding.homeRecyclerView.adapter = HomeRecyclerAdapter(requireContext(), event.foodList, this@HomeFragment)
+                        binding.parentRecyclerView.adapter = ParentAdapter(requireContext(), event.categoryList)
                         binding.homeProgressBar.visibility = View.GONE
                     }
-                    is HomeViewModel.FoodEvent.Loading -> {
+                    is HomeViewModel.CategoryEvent.Loading -> {
                         binding.homeProgressBar.visibility = View.VISIBLE
                     }
-                    is HomeViewModel.FoodEvent.Failure -> {
+                    is HomeViewModel.CategoryEvent.Failure -> {
                         Log.d("MyLoggggggFood", event.errorText)
                         binding.homeProgressBar.visibility = View.GONE
                     }
-
                     else -> Unit
                 }
             }
@@ -77,6 +78,13 @@ class HomeFragment : Fragment(), HomeRecyclerAdapter.HomeViewHolder.OnClickHomeE
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isResumed) {
+            viewModel.requestCategoryFromApi(readDataFromSharedPref(Constant.ACCESS_TOKEN, sharedPref)!!)
+        }
     }
 
     private fun readDataFromSharedPref(key: String, sharedPref: SharedPreferences): String?{

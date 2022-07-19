@@ -6,5 +6,6 @@ import java.math.BigDecimal
 data class Order(
     val lineOrderRequestList: List<LineOrderRequest>,
     val price: BigDecimal,
-    val tableId: Long
+    val tableId: Long,
+    val token: String
 )

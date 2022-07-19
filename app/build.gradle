@@ -91,6 +91,13 @@ dependencies {
     implementation 'com.google.mlkit:barcode-scanning:17.0.2'
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.0.0'
 
+    //Splashscreen New Api
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
+    //Konform for password validation
+    implementation "io.konform:konform-jvm:0.3.0"
+
+    //Coil for image Url load
+    implementation "io.coil-kt:coil:2.1.0"
 }
 

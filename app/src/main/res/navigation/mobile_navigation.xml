@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.mynaoseioqueapp.presentation.main.bottom_nav.cart.CartFragment"
+        android:name="com.example.mynaoseioqueapp.presentation.main.bottom_nav.cart.CartFragmentSub"
         android:label="@string/title_cart"
         tools:layout="@layout/fragment_cart" />
 

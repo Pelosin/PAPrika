@@ -30,12 +30,12 @@ class FoodDetailsViewModel @Inject constructor(
     private val _request = MutableStateFlow<SetLineOrderEvent>(SetLineOrderEvent.Empty)
     val request: StateFlow<SetLineOrderEvent> =  _request
 
-    fun setLineOrderList(food:Food) {
+    fun setLineOrderList(food:Food, quantity: Int) {
         viewModelScope.launch (dispatcherProvider.default){
             _request.value = SetLineOrderEvent.Loading
             try {
-                val lineOrder = LineOrder(food.name, 1, food.price, BigDecimal(0))
-                LineOrderSetter.setLineOrderList(lineOrder, food.price)
+                val lineOrder = LineOrder(food.name, quantity, food.price, BigDecimal(0), food.url)
+                LineOrderSetter.setLineOrderList(lineOrder)
                 _request.value = SetLineOrderEvent.Success(lineOrder)
             } catch (e: Exception){
                 _request.value = SetLineOrderEvent.Failure(e.localizedMessage!!)
